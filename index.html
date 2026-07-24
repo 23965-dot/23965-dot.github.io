@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ระบบจัดการออเดอร์โรงอาหาร</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================= HEADER ============================= -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-badge" aria-hidden="true">🍽️</div>
+      <div>
+        <h1>ระบบจัดการออเดอร์โรงอาหาร</h1>
+        <p class="subtitle">จัดการออเดอร์แบบเรียลไทม์</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="stat-pill" id="statTotal">
+        <span class="stat-label">ออเดอร์ทั้งหมด</span>
+        <span class="stat-value" id="statTotalValue">–</span>
+      </div>
+      <div class="stat-pill" id="statCurrent">
+        <span class="stat-label">คิวปัจจุบัน</span>
+        <span class="stat-value" id="statCurrentValue">–</span>
+      </div>
+      <div class="connection-indicator" id="connectionIndicator" title="สถานะการเชื่อมต่อ">
+        <span class="dot" id="connectionDot"></span>
+        <span id="connectionText">กำลังเชื่อมต่อ…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================= TOOLBAR ============================= -->
+  <section class="toolbar">
+    <div class="toolbar-group search-group">
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="ค้นหาด้วยชื่อนักเรียน, ห้องเรียน, หรือร้านค้า…"
+        aria-label="ค้นหาออเดอร์"
+      />
+    </div>
+
+    <div class="toolbar-group">
+      <label for="filterStatus" class="toolbar-label">สถานะ</label>
+      <select id="filterStatus" aria-label="กรองตามสถานะ">
+        <option value="All">ทั้งหมด</option>
+        <option value="Pending">รอดำเนินการ</option>
+        <option value="Cooking">กำลังปรุง</option>
+        <option value="Ready">พร้อมรับ</option>
+        <option value="Completed">เสร็จสิ้น</option>
+      </select>
+    </div>
+
+    <div class="toolbar-group">
+      <label for="sortBy" class="toolbar-label">เรียงตาม</label>
+      <select id="sortBy" aria-label="เรียงลำดับออเดอร์">
+        <option value="newest">ล่าสุดก่อน</option>
+        <option value="oldest">เก่าสุดก่อน</option>
+        <option value="pickupTime">เวลารับอาหาร</option>
+        <option value="queueId">หมายเลขคิว</option>
+      </select>
+    </div>
+
+    <button class="btn btn-secondary" id="refreshBtn" type="button">
+      ⟳ รีเฟรช
+    </button>
+  </section>
+
+  <!-- ============================= ORDER GRID ============================= -->
+  <main>
+    <div id="emptyState" class="empty-state hidden">
+      <p>ไม่พบออเดอร์ที่ตรงกับเงื่อนไขที่เลือก</p>
+    </div>
+    <div id="orderGrid" class="order-grid" aria-live="polite"></div>
+  </main>
+
+  <!-- Card template, cloned per order by script.js -->
+  <template id="orderCardTemplate">
+    <article class="order-card" data-queue-id="">
+      <header class="card-header">
+        <span class="queue-number"></span>
+        <span class="status-badge"></span>
+      </header>
+      <div class="card-body">
+        <div class="field">
+          <span class="field-icon" aria-hidden="true">🎓</span>
+          <span class="field-value student-name"></span>
+        </div>
+        <div class="field">
+          <span class="field-icon" aria-hidden="true">🏫</span>
+          <span class="field-value classroom"></span>
+        </div>
+        <div class="field">
+          <span class="field-icon" aria-hidden="true">🍜</span>
+          <span class="field-value food-stall"></span>
+        </div>
+        <div class="field food-description-field">
+          <span class="field-icon" aria-hidden="true">📝</span>
+          <span class="field-value food-description"></span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <span class="field-icon" aria-hidden="true">🔢</span>
+            <span class="field-value quantity"></span>
+          </div>
+          <div class="field">
+            <span class="field-icon" aria-hidden="true">⏰</span>
+            <span class="field-value pickup-time"></span>
+          </div>
+        </div>
+        <div class="field note-field hidden">
+          <span class="field-icon" aria-hidden="true">💬</span>
+          <span class="field-value note"></span>
+        </div>
+      </div>
+      <footer class="card-actions">
+        <button type="button" class="btn btn-status" data-status="Cooking">เริ่มปรุง</button>
+        <button type="button" class="btn btn-status" data-status="Ready">พร้อมรับ</button>
+        <button type="button" class="btn btn-status" data-status="Completed">เสร็จสิ้น</button>
+      </footer>
+    </article>
+  </template>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
